@@ -1,5 +1,13 @@
 import './App.css'
-
+import Header from './components/Header/Header'
+import TodoList from './components/TodoList/TodoList'
+import NewTodoTask from './components/NewTodoTask/NewTodoTask'
+import { useState } from 'react';
+let initialId = 4;
+function uniqueId(){
+  initialId = initialId + 1;
+  return initialId
+}
 function App() {
   const todoList = [
     {
@@ -27,11 +35,24 @@ function App() {
       isFinished: true,
     }
   ]
-
+  let [todoListState,setTodoListState] = useState(todoList)
+  const addNewTodo= (todo) => {
+    const newTodoData = {
+      ...todo,
+      isFinished: false,
+      id: uniqueId(),
+    }
+    let temp = todoListState.slice()
+    temp.push(newTodoData)
+    setTodoListState(temp)
+  }
   return (
     <div className="App">
       {/* Header here */}
+      <Header/>
+      <NewTodoTask addNewTodo={addNewTodo}/>
       {/* Todo list here*/}
+      <TodoList todoList={todoListState}/>
     </div>
   )
 }
